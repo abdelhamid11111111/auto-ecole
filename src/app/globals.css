@@ -174,6 +174,14 @@ ol {
   flex-direction: column;
   justify-content: center;
 }
+/*
+  The header is sticky, so an anchor jump would otherwise park the section's
+  first line underneath it. Reserving the shrunk height — the state the header
+  is always in once the page has scrolled — lands the heading just below it.
+*/
+section[id] {
+  scroll-margin-top: var(--nav-h-shrunk);
+}
 /* The two bands the page alternates between. */
 .s-cream {
   background: var(--color-warm-cream);
@@ -425,7 +433,7 @@ ol {
   border: 1px solid var(--line-strong);
   border-radius: 1px;
   width: 44px;
-  height: 40px;
+  height: 44px;
   cursor: pointer;
   align-items: center;
   justify-content: center;
@@ -918,11 +926,21 @@ ol {
   width: 15px;
   height: 15px;
 }
+/*
+  Clamped to three lines so every card is the same shape and the rail stays
+  skimmable — the quotes themselves run four to six lines. `flex: 1` still
+  holds, so the author block stays pinned to the bottom of the card.
+*/
 .quote blockquote {
   font-size: var(--text-body-sm);
   line-height: 1.6;
   color: var(--ink-muted);
   flex: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
 }
 .who {
   display: flex;
@@ -1171,6 +1189,11 @@ ol {
   font-size: var(--text-caption);
   color: var(--ink-subtle);
   text-align: right;
+  /* Narrow panels: the handle gives way rather than pushing the row wider. */
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .social-row:hover {
   color: var(--color-forest-ink);
@@ -1443,6 +1466,19 @@ ol {
   }
 }
 @media (max-width: 900px) {
+  /*
+    Tablet and below. The section rhythm was tuned for a 1200px canvas — at
+    this width the same padding reads as dead space, so the tokens shrink once
+    and every section, card and header follows without its own override.
+  */
+  :root {
+    --section-pad: clamp(64px, 9vh, 104px);
+    --nav-h: 68px;
+    --nav-h-shrunk: 58px;
+  }
+  .stats {
+    padding-block: clamp(56px, 8vh, 88px);
+  }
   /* The burger takes the second column once the links are out of flow. */
   .nav-links {
     display: none;
@@ -1455,6 +1491,17 @@ ol {
   }
   .about {
     grid-template-columns: 1fr;
+  }
+  /*
+    Single column: the story goes first and the photograph closes it. Source
+    order keeps the image next to its caption for assistive tech, so the swap
+    is done with `order` rather than by moving the markup.
+  */
+  .about-copy {
+    order: 1;
+  }
+  .about-media {
+    order: 2;
   }
   .contact {
     grid-template-columns: 1fr 1fr;
@@ -1483,17 +1530,99 @@ ol {
     padding-left: 0;
     border-left: 0;
   }
+  /*
+    Stacked, three quotes cost three screenfuls of scrolling. Here they become
+    one snap rail instead: the cards run edge to edge out of `.wrap` via the
+    negative inline margin, and each is 78% wide so the next one peeks in and
+    advertises that the row moves. The block padding is what keeps the reveal's
+    18px lift and the hover shadow from raising a stray vertical scrollbar —
+    `overflow-x: auto` promotes `overflow-y` to `auto` as well.
+  */
+  .quotes {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(240px, 78%);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline-start: var(--gutter);
+    overscroll-behavior-x: contain;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 20px var(--gutter) 24px;
+    scrollbar-width: none;
+  }
+  .quotes::-webkit-scrollbar {
+    display: none;
+  }
+  .quote {
+    scroll-snap-align: start;
+  }
 }
 @media (max-width: 640px) {
+  :root {
+    --section-pad: clamp(48px, 7vh, 72px);
+    --card-padding: 20px;
+  }
+  .stats {
+    padding-block: clamp(44px, 6vh, 64px);
+  }
+  .footer {
+    padding-block: clamp(48px, 7vh, 72px) 32px;
+  }
+  .contact {
+    margin-top: clamp(28px, 4vh, 44px);
+  }
+  /*
+    Several body sizes are clamped against `vh`. On a phone that term collapses
+    to the floor — 14–15px, below this design's reading size — so the copy that
+    matters is pinned back up for the one column it now has to itself.
+  */
+  .about-copy p,
+  .card p {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .values .t {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .sec-head {
+    align-items: flex-start;
+    gap: 20px;
+  }
   .cards {
     grid-template-columns: 1fr;
+  }
+  /* One per row: the fixed height only existed to keep four columns level. */
+  .card {
+    min-height: 0;
   }
   .steps {
     grid-template-columns: 1fr;
     gap: 34px;
   }
+  .step {
+    padding-right: 0;
+  }
+  .stat {
+    padding: 0 14px;
+  }
+  .contact-panel {
+    padding: 20px;
+  }
+  .map-foot {
+    padding-inline: 20px;
+  }
+  .foot-bottom {
+    margin-top: 40px;
+  }
+  /* Clear of the thumb rest and of the footer's last line. */
+  .totop {
+    right: 16px;
+    bottom: 16px;
+  }
+  /* Narrower screen, wider card — the peek only needs to be a hint. */
   .quotes {
-    grid-template-columns: 1fr;
+    grid-auto-columns: minmax(240px, 86%);
   }
   .grid-2 {
     grid-template-columns: 1fr;
@@ -1530,10 +1659,48 @@ ol {
   .hero-ctas {
     width: 100%;
   }
+  /*
+    Stays inside the photograph rather than dropping below it, inset from the
+    corner so the cream block reads as a label on the image instead of a strip
+    welded to its edge.
+  */
   .about-tag {
-    position: static;
-    max-width: none;
-    padding: 22px 0 0;
+    left: 16px;
+    bottom: 16px;
+    max-width: calc(100% - 32px);
+    padding: 18px 20px;
+  }
+}
+
+/*
+  Small phones (iPhone SE / mini class, 320–400px). The display floor and the
+  stat figures were sized for a 375px+ canvas; below that they start breaking
+  words and crowding the two stat columns, so both step down once more.
+*/
+@media (max-width: 400px) {
+  .display {
+    font-size: clamp(30px, 8.6vw, 38px);
+    letter-spacing: 0.04em;
+  }
+  .h-lg,
+  .about-copy h2 {
+    font-size: 27px;
+  }
+  .stat .num {
+    font-size: 34px;
+  }
+  .stat .lbl {
+    margin-top: 10px;
+    letter-spacing: 0.08em;
+  }
+  .about-tag .k {
+    font-size: 28px;
+  }
+  .step h3 {
+    font-size: 22px;
+  }
+  .wordmark .sub {
+    letter-spacing: 0.22em;
   }
 }
 
