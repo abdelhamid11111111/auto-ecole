@@ -1,37 +1,42 @@
-// Type-only entry point: pulls the `Icon` signature without dragging any of
-// the client-side icon components into a Server Component graph.
-import type { Icon } from "@phosphor-icons/react/lib";
+/** Shared shapes for the page content in `src/data`. */
 
-export type Photo = {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-};
+/** Keys of the inline SVG set in `components/ui/icons.tsx`. */
+export type FormationIcon = "permis" | "aac" | "code" | "perfectionnement";
 
 export type Formation = {
   id: string;
-  name: string;
-  summary: string;
-  icon: Icon;
-  /** Detail bullets. Only the featured bento cell renders these. */
-  points?: string[];
-  photo?: Photo;
-};
-
-export type Step = {
-  id: string;
-  name: string;
+  icon: FormationIcon;
+  title: string;
   description: string;
-  icon: Icon;
+  /** Displayed as-is under the copy, e.g. "Dès 1 190 € · 20 h". */
+  price: string;
 };
 
-export type Testimonial = {
+export type Etape = {
+  /** Two-digit marker shown in the knob. */
+  num: string;
+  title: string;
+  description: string;
+};
+
+export type Temoignage = {
   id: string;
-  name: string;
-  /** Age plus the formation taken, used as the attribution line. */
-  role: string;
   quote: string;
-  rating: 1 | 2 | 3 | 4 | 5;
-  avatar: string;
+  name: string;
+  /** Formation followed + when, e.g. "Permis B · obtenu en mars". */
+  meta: string;
+  /** 1 to 5. */
+  rating: number;
+};
+
+export type Stat = {
+  /** Target of the count-up animation. */
+  value: number;
+  /** Decimals to keep while counting, e.g. 1 for "4,9". */
+  decimals?: number;
+  /** Thousands grouping with a narrow no-break space (2 500). */
+  group?: boolean;
+  /** Appended once the number is rendered, e.g. "+", " %", "/5". */
+  suffix?: string;
+  label: string;
 };

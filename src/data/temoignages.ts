@@ -1,62 +1,28 @@
-import type { Testimonial } from "@/types";
+import type { Temoignage } from "@/types";
 
-/**
- * Placeholder testimonials for the template. Ratings are deliberately mixed
- * rather than a wall of five stars. Replace with real, consented reviews.
- */
-export const temoignages: Testimonial[] = [
+export const temoignages: Temoignage[] = [
   {
-    id: "ines",
-    name: "Inès Bouchard",
-    role: "19 ans, permis B",
-    quote:
-      "Le même moniteur pendant six mois, ça change tout. Il savait exactement ce qui me bloquait sur les créneaux.",
+    id: "lea",
     rating: 5,
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+    quote:
+      "« J’ai commencé en paniquant dès qu’il fallait tourner à gauche. Sofiane a passé deux heures entières sur les giratoires sans jamais me faire sentir que je perdais son temps. Permis du premier coup, et surtout : je conduis vraiment depuis. »",
+    name: "Léa",
+    meta: "Permis B · obtenu en mars",
   },
   {
     id: "mehdi",
-    name: "Mehdi Zerrouki",
-    role: "22 ans, permis moto A2",
-    quote:
-      "Le plateau était carré, on l’a répété jusqu’à ce que ce soit propre. Rien ne m’a surpris le jour J.",
     rating: 5,
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+    quote:
+      "« Le devis du premier jour est exactement celui que j’ai payé à la fin. Trois heures de plus que prévu, annoncées deux semaines à l’avance, expliquées. Ça paraît normal, ce ne l’est pas partout. »",
+    name: "Mehdi",
+    meta: "Conduite accompagnée · 19 ans",
   },
   {
     id: "camille",
-    name: "Camille Vasseur",
-    role: "17 ans, conduite accompagnée",
-    quote:
-      "Mes parents étaient rassurés, moi aussi. Les rendez-vous pédagogiques servent vraiment à quelque chose.",
-    rating: 4,
-    avatar: "https://randomuser.me/api/portraits/women/68.jpg",
-  },
-  {
-    id: "thomas",
-    name: "Thomas Grivel",
-    role: "24 ans, permis B",
-    quote:
-      "J’avais raté deux fois ailleurs. L’examen blanc m’a montré où je perdais des points, et c’est passé.",
     rating: 5,
-    avatar: "https://randomuser.me/api/portraits/men/75.jpg",
-  },
-  {
-    id: "lea",
-    name: "Léa Marchand",
-    role: "20 ans, code de la route",
     quote:
-      "Salle ouverte le samedi, ça m’a sauvée. J’ai eu le code en cinq semaines en travaillant à côté.",
-    rating: 5,
-    avatar: "https://randomuser.me/api/portraits/women/12.jpg",
-  },
-  {
-    id: "youssef",
-    name: "Youssef Benali",
-    role: "26 ans, permis B boîte automatique",
-    quote:
-      "Tarifs affichés dès le premier rendez-vous, aucune heure vendue en trop. On sait où on va.",
-    rating: 4,
-    avatar: "https://randomuser.me/api/portraits/men/54.jpg",
+      "« Les séries de code du mardi soir m’ont sauvée. On corrige à l’oral, on discute des pièges, et l’ambiance de la salle fait qu’on revient. J’ai eu 39/40 après cinq semaines. »",
+    name: "Camille",
+    meta: "Code de la route · 24 ans",
   },
 ];

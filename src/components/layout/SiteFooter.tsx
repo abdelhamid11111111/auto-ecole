@@ -1,76 +1,102 @@
-import { SteeringWheelIcon } from "@phosphor-icons/react/ssr";
-import { navLinks, site } from "@/data/site";
+import { socialIcons } from "@/components/ui/icons";
+import {
+  footerFormations,
+  footerLegal,
+  footerNav,
+  mapLinkUrl,
+  site,
+  socials,
+} from "@/data/site";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line bg-surface">
-      <div className="mx-auto w-full max-w-350 px-4 sm:px-6 lg:px-10 py-14">
-        <div className="grid gap-10 md:grid-cols-3">
-          <div>
-            <span className="inline-flex items-center gap-2 text-base font-semibold tracking-tight">
-              <SteeringWheelIcon
-                aria-hidden
-                size={22}
-                weight="bold"
-                className="text-accent-strong"
-              />
-              {site.name}
-            </span>
-            <p className="mt-3 text-sm leading-relaxed text-muted max-w-xs">
-              {site.legalName}, agrément préfectoral. Formations au permis B, au
-              permis moto et au code de la route.
+    <footer className="s-cream footer">
+      <div className="wrap">
+        <div className="foot-grid">
+          <div className="foot-about">
+            <a className="wordmark" href="#accueil">
+              <span className="mark">{site.name}</span>
+              <span className="sub">{site.tagline}</span>
+            </a>
+            <p>
+              Auto-école indépendante au cœur d’Agadir. Un moniteur attitré, des
+              tarifs affichés, et des conducteurs qui tiennent la route bien
+              après l’examen.
             </p>
-          </div>
-
-          <div className="text-sm">
-            <h2 className="font-medium">Nous trouver</h2>
-            <address className="mt-3 not-italic leading-relaxed text-muted">
-              {site.address}
-              <br />
-              <a
-                href={site.phoneHref}
-                className="hover:text-ink transition-colors"
-              >
-                {site.phone}
-              </a>
-              <br />
-              <a
-                href={`mailto:${site.email}`}
-                className="hover:text-ink transition-colors"
-              >
-                {site.email}
-              </a>
-            </address>
-            <dl className="mt-4 space-y-1 text-muted">
-              {site.hours.map((slot) => (
-                <div key={slot.days} className="flex gap-2">
-                  <dt className="text-subtle">{slot.days}</dt>
-                  <dd>{slot.time}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-
-          <nav aria-label="Pied de page" className="text-sm">
-            <h2 className="font-medium">Sur cette page</h2>
-            <ul className="mt-3 space-y-2">
-              {navLinks.map((link) => (
-                <li key={link.href}>
+            <div className="socials">
+              {socials.map((social) => {
+                const Icon = socialIcons[social.id];
+                return (
                   <a
-                    href={link.href}
-                    className="text-muted hover:text-ink transition-colors"
+                    key={social.id}
+                    href={social.href}
+                    aria-label={social.label}
                   >
-                    {link.label}
+                    <Icon />
                   </a>
+                );
+              })}
+            </div>
+          </div>
+
+          <nav aria-label="Navigation du pied de page">
+            <h4>Navigation</h4>
+            <ul>
+              {footerNav.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href}>{link.label}</a>
                 </li>
               ))}
             </ul>
           </nav>
+
+          <nav aria-label="Nos formations">
+            <h4>Formations</h4>
+            <ul>
+              {footerFormations.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href}>{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div>
+            <h4>Nous trouver</h4>
+            <ul>
+              <li>
+                <a href={mapLinkUrl} target="_blank" rel="noopener">
+                  {site.address.street}
+                  <br />
+                  {site.address.city}
+                </a>
+              </li>
+              <li>
+                <a href={site.phoneHref}>{site.phone}</a>
+              </li>
+              <li>
+                <a href={site.emailHref}>{site.email}</a>
+              </li>
+              <li>
+                <a href="#contact">Lun–Ven 9 h–19 h · Sam 9 h–13 h</a>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <p className="mt-12 border-t border-line pt-6 text-xs text-subtle">
-          © {new Date().getFullYear()} {site.legalName}. Tous droits réservés.
-        </p>
+        <div className="foot-bottom">
+          <p>
+            © {new Date().getFullYear()} {site.name} — Agrément préfectoral{" "}
+            {site.agrement}
+          </p>
+          <div className="foot-legal">
+            {footerLegal.map((link) => (
+              <a key={link.label} href={link.href}>
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
     </footer>
   );

@@ -1,32 +1,20 @@
-import { StarIcon } from "@phosphor-icons/react/ssr";
+import { StarIcon } from "@/components/ui/icons";
 
 /**
- * Rating display. The number is the accessible value; the stars are decorative
- * so screen readers hear "4 sur 5" once instead of five separate glyphs.
+ * Rating row. The stars are decorative once the score is announced, so the row
+ * carries a single `img` role with the score as its label rather than five
+ * unlabelled graphics.
  */
-export function Stars({
-  rating,
-  label,
-  className = "",
-}: {
-  /** Filled star count, 0 to 5. */
-  rating: number;
-  /** Overrides the announced value when the glyphs round an average. */
-  label?: string;
-  className?: string;
-}) {
+export function Stars({ rating, outOf = 5 }: { rating: number; outOf?: number }) {
   return (
-    <span className={`inline-flex items-center gap-0.5 ${className}`}>
-      <span className="sr-only">{label ?? `${rating} sur 5`}</span>
-      {Array.from({ length: 5 }, (_, i) => (
-        <StarIcon
-          key={i}
-          aria-hidden
-          size={15}
-          weight={i < rating ? "fill" : "regular"}
-          className={i < rating ? "text-rating" : "text-line-strong"}
-        />
+    <div
+      className="stars"
+      role="img"
+      aria-label={`${rating} étoiles sur ${outOf}`}
+    >
+      {Array.from({ length: rating }, (_, i) => (
+        <StarIcon key={i} />
       ))}
-    </span>
+    </div>
   );
 }

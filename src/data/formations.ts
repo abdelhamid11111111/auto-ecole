@@ -1,60 +1,46 @@
-import {
-  BookOpenTextIcon,
-  CarIcon,
-  MotorcycleIcon,
-  UsersThreeIcon,
-} from "@phosphor-icons/react/ssr";
 import type { Formation } from "@/types";
 
-/**
- * The four formations, ordered by how the bento reads: the featured cell first,
- * then the wide cell, then the two half cells.
- */
 export const formations: Formation[] = [
   {
     id: "permis-b",
-    name: "Permis B",
-    summary:
-      "Boîte manuelle ou automatique. Vingt heures de conduite au minimum, puis autant qu’il en faut pour être vraiment prêt.",
-    icon: CarIcon,
-    points: [
-      "Conduite en ville, sur route et sur voie rapide",
-      "Créneaux, épis et manœuvres en marche arrière",
-      "Freinage d’urgence et gestion des imprévus",
-      "Examen blanc en conditions réelles",
-    ],
-    photo: {
-      src: "https://images.pexels.com/photos/1051071/pexels-photo-1051071.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      alt: "Une élève au volant, la main sur le toit ouvrant de la voiture",
-      width: 1200,
-      height: 1800,
-    },
+    icon: "permis",
+    title: "Permis B",
+    description:
+      "Boîte manuelle ou automatique, à partir de 20 heures de conduite. Un moniteur attitré du premier créneau jusqu’au jour de l’examen, et un bilan écrit après chaque leçon.",
+    price: "Dès 1 190 € · 20 h",
+  },
+  {
+    id: "conduite-accompagnee",
+    icon: "aac",
+    title: "Conduite accompagnée",
+    description:
+      "Dès 15 ans, pour aborder l’examen avec 3 000 km dans les jambes. On forme aussi vos accompagnateurs et on vous revoit trois fois pendant la période.",
+    price: "Dès 1 290 € · AAC",
   },
   {
     id: "code",
-    name: "Code de la route",
-    summary:
-      "Cours en salle six jours sur sept et entraînement en ligne illimité jusqu’au jour de l’examen. Vous passez le code quand votre taux de réussite est stable, pas avant.",
-    icon: BookOpenTextIcon,
+    icon: "code",
+    title: "Code de la route",
+    description:
+      "Cours en salle trois soirs par semaine, plateforme d’entraînement illimitée et séries corrigées à voix haute par un enseignant — pas par un écran.",
+    price: "Dès 290 € · 6 mois d’accès",
   },
   {
-    id: "aac",
-    name: "Conduite accompagnée",
-    summary:
-      "Dès 15 ans, 3 000 km au côté d’un proche et trois rendez-vous pédagogiques avec votre moniteur.",
-    icon: UsersThreeIcon,
-  },
-  {
-    id: "permis-a",
-    name: "Permis moto",
-    summary:
-      "A1, A2 et passerelle A. Plateau sur piste privée, puis circulation en conditions réelles.",
-    icon: MotorcycleIcon,
-    photo: {
-      src: "https://images.pexels.com/photos/26760670/pexels-photo-26760670.jpeg?auto=compress&cs=tinysrgb&w=900",
-      alt: "Un motard casqué en circulation dans une rue de centre-ville",
-      width: 900,
-      height: 1350,
-    },
+    id: "perfectionnement",
+    icon: "perfectionnement",
+    title: "Perfectionnement",
+    description:
+      "Reprise après une longue pause, autoroute, manœuvres, conduite de nuit ou sous la pluie. À l’heure, sans forfait et sans engagement.",
+    price: "52 €/heure · à la carte",
   },
 ];
+
+/** Options of the "Formation souhaitée" select in the contact form. */
+export const formationOptions = [
+  "Permis B — boîte manuelle",
+  "Permis B — boîte automatique",
+  "Conduite accompagnée (AAC)",
+  "Code de la route",
+  "Perfectionnement à la conduite",
+  "Je ne sais pas encore",
+] as const;

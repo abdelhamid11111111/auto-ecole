@@ -1,37 +1,64 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ElementType, type ReactNode } from "react";
+
+type RevealTag = "div" | "article" | "section" | "li" | "ol";
 
 /**
- * Enter-on-scroll wrapper. Used where items simply need to arrive in reading
- * order (feature cards, testimonial header); anything that needs to be pinned
- * or scrubbed uses GSAP instead, in its own component so the two libraries
- * never share a tree.
+ * Enter-on-scroll wrapper for the `.rv` primitive in `globals.css`.
+ *
+ * The visual state lives in CSS (`.rv` -> `.rv.in`); this only flips the class
+ * the first time the element crosses into view, then stops observing it. The
+ * reduced-motion block in the stylesheet already pins `.rv` to its finished
+ * state, so no JS branch is needed for that, and browsers without
+ * IntersectionObserver get the content revealed immediately rather than a
+ * blank page.
  */
 export function Reveal({
-  children,
-  delay = 0,
-  y = 24,
-  className = "",
   as = "div",
+  className = "",
+  delay = 0,
+  children,
 }: {
-  children: ReactNode;
-  delay?: number;
-  y?: number;
+  as?: RevealTag;
   className?: string;
-  as?: "div" | "li" | "section";
+  /** Stagger in milliseconds, applied as a transition delay. */
+  delay?: number;
+  children: ReactNode;
 }) {
-  const reduce = useReducedMotion();
-  const Tag = motion[as];
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    if (!("IntersectionObserver" in window)) {
+      el.classList.add("in");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("in");
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const Tag = as as ElementType;
 
   return (
     <Tag
-      className={className}
-      initial={reduce ? false : { opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
+      ref={ref}
+      className={className ? `rv ${className}` : "rv"}
+      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}
     </Tag>
